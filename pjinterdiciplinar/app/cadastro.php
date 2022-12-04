@@ -30,8 +30,8 @@ session_start();
             
             ?>
             <input type="text" name="user" id="user" class="input" placeholder="Insert your user">
-            <button type="submit" class="btn">Login</button>
-            <a href="cadastro.php">Não possui uma conta? Cadastre-se!</a>
+            <button type="submit" class="btn">Cadastrar</button>
+            <a href="index.php">Já possui uma conta? Entre!</a>
         </form>
     </div>
 </body>
