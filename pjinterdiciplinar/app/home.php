@@ -3,14 +3,16 @@
     session_start();
     require('connect.php');
 
-    if(!isset($_SESSION['user logged'])){
+    if(!isset($_SESSION['user_logged'])){
         header('Location: index.php');
     }
 
     try{
-        $stmt = $conn ->prepare("SELECT p.id, p.post, u.user FROM posts p JOIN users u ON p.user_id = u.id ORDER BY p.id desc")
+    $stmt = $conn->prepare("SELECT p.id, p.post, u.user FROM posts p JOIN users u ON p.user_id = u.id ORDER BY p.id desc");
         $stmt->execute();
         $posts = $stmt->fetchAll();
+    }catch(PDOException $e){
+        echo $e->getMessage();
     }
 
 
@@ -35,7 +37,7 @@
             Olá caro internauta! <?php echo ucfirst($_SESSION['user_logged'])?>
         </h3>
         <?php
-            if(isset($_SESSION['sucess'])){
+            if(isset($_SESSION['success'])){
                 echo'<spam class="success">' . $_SESSION['sucess'] . '</span>';
             }
 
