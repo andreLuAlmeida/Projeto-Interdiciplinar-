@@ -32,38 +32,42 @@
     <title>Plataforma de Debates</title>
 </head>
 <body>
-    <div class="box">
+    <div class="box-home">
         <h3 class="h3">
             Olá caro internauta! <?php echo ucfirst($_SESSION['user_logged'])?>
         </h3>
         <?php
             if(isset($_SESSION['success'])){
-                echo'<spam class="success">' . $_SESSION['sucess'] . '</span>';
+                echo'<span class="success">' . $_SESSION['success'] . '</span>';
             }
 
             if(isset($_SESSION['error'])){
-                echo'<spam class="success">' . $_SESSION['error'] . '</span>';
+                echo'<span class="success">' . $_SESSION['error'] . '</span>';
             }
 
             unset($_SESSION['success']);
             unset($_SESSION['error']);
         ?>
-
-    <from action="post.php" method="post" class="form-post">
+    <!-- BOTAO PUBLICAR TESE-->
+    <form action="post.php" method="post" class="form-post">
         <textarea name="post" id="post" class="input" placeholder="Apresente uma tese!"></textarea>
         <button type="submit" class="btn btn-post">Publicar</button>
-    </from>
+    </form>
 
+    <!-- POSTS-->
     <div class="posts">
-        <div class="post">
             <?php
                 foreach($posts as $post){
-                    $tmt = $conn->prepare("select count(*) as likes from likes where post_id = " . $post['id']);
+                    $stmt = $conn->prepare("select count(*) as likes from likes where post_id = " . $post['id']);
                     $stmt->execute();
                     $likes = $stmt -> fetchAll();
             ?>
+        <div class="post">
+            
             <p class="user"><?php echo $post['user']; ?></p>
             <p class="text-post"><?php echo $post['post']; ?></p>
+
+            <!-- BOTAO APROVAR -->
             <div class="items">
                 <ul>
                     <li>
@@ -74,13 +78,16 @@
                     </li>
                 </ul>
             </div>
-            <div>
+
+            <!-- COMENTARIO-->
+            <div class="comments">
                 <p class="title-comments">Contra tese</p>
                 <form action="comment.php" method="post">
                     <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">  
                     <input type="text" name="comment" id="comment" class="comment-input" placeholder="Redija aqui sua contra tese">
                     <button type="submit" class="btn-comment">Publicar</button>
                 </form>
+
                 <?php
                     $stmt = $conn->prepare("SELECT c.id, c.comment, u.user FROM comments c JOIN users u ON c.user_id = u.id WHERE c.post_id = " . $post['id'] . " ORDER BY c.id desc");
                     $stmt->execute();
@@ -90,6 +97,7 @@
                 ?>
                     <div class="comment">
                         <p class="user"><?php echo $comment['user']?></p>
+                        <p class="text-comment"><?php echo $comment['comment'] ?></p>
                     </div>
                     <?php
                      }

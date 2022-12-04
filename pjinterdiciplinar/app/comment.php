@@ -9,10 +9,10 @@ try {
     $stmt->bindParam(3, $_POST['comment'], PDO::PARAM_STR);
 
     if($stmt->execute()){
-        $_SESSION["success"] = "Contra tese enviada.";
+        $_SESSION['success'] = "Contra tese enviada.";
         header("Location: home.php");
     }else{
-        $_SESSION["error"] = "Contra tese não enviada.";
+        $_SESSION['error'] = "Contra tese não enviada.";
         header("Location: home.php");
     }
 
