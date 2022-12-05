@@ -2,6 +2,8 @@
 
     session_start();
     require('connect.php');
+require('userClass.php');
+    $p = new Pessoas;
 
     if(!isset($_SESSION['user_logged'])){
         header('Location: index.php');
@@ -16,7 +18,10 @@
     }
 
 
-
+    if((isset($_SESSION['id_logged']))){
+    $id_update = $_SESSION['id_logged'];
+    $res = $p->buscarDadosPessoa($id_update);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -109,5 +114,29 @@
     </div>
 
     </div>
+
+    <div class="box-home">
+        <h3 class="h3">
+            Alterar perfil do <?php echo ucfirst($_SESSION['user_logged'])?>
+        </h3>
+        <td>
+            <div action="alterar.php" method="post">
+            <input type="text" id="userum" class="input" placeholder="user" value="">
+
+            <input type="password" id="senhaum" class="input" placeholder="senha" value="">
+            </div>
+            <a href="home.php?id_up=<?php echo $_SESSION['id_logged'];?> ">Editar</a>
+            <a href="home.php?id=<?php echo $_SESSION['id_logged'];?>">Excluir</a>
+        </td>
+
+    </div>
 </body>
 </html>
+
+<?php
+ if(isset($_GET['id'])){
+    $id_pessoa = addslashes($_GET['id']);
+    $p->excluirPessoa($id_pessoa);
+    header('Location: index.php');
+ }
+?>

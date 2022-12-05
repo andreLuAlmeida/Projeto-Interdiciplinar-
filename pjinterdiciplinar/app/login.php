@@ -7,7 +7,11 @@ try{
     $stmt->execute();
     $user = $stmt->fetchAll()[0];
 
-    if($user){
+    $stmtTwo = $conn->prepare("SELECT id, senha FROM users WHERE senha = '" . $_POST['senha'] . "'");
+    $stmtTwo->execute();
+    $userTwo = $stmtTwo->fetchAll()[0];
+
+    if($user && $userTwo){
         $_SESSION['user_logged'] = $user['user'];
         $_SESSION['id_logged'] = $user['id'];
         header("Location: home.php");
@@ -16,7 +20,7 @@ try{
     {
         unset($_SESSION['user_logged']);
         unset($_SESSION['id_logged']);
-        $_SESSION['error'] = "Usuário inválido";
+        $_SESSION['error'] = "Usuário ou senha inválidos";
         header("Location: index.php");
 
     }

@@ -29,6 +29,7 @@ session_start();
             
             ?>
             <input type="text" name="user" id="user" class="input" placeholder="Insert your user">
+            <input type="password" name="senha" id="senha" class="input" placeholder="Insert your pass">
             <button type="submit" class="btn">Login</button>
             <a href="cadastro.php">Não possui uma conta? Cadastre-se!</a>
         </form>
